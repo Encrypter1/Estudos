@@ -1,9 +1,14 @@
 {% extends 'base.html' %}
 {% block title %}
-    Market Page
+Market Page
 {% endblock %}
-
 {% block content %}
+
+<div class="row" style="margin-top:20px; margin-left:20px">
+    <div class="col-8">
+        <h2>Available items on the market</h2>
+        <p>Click on one of the items to start buying</p>
+        <br>
         <table class="table table-hover table-dark">
             <thead>
                 <tr>
@@ -18,6 +23,7 @@
             <tbody>
                 <!-- Your rows inside the table HERE: -->
                 {% for item in items %}
+                {% include 'includes/items_modals.html' %}
                 <tr>
                     <td>{{ item.id }}</td>
                     <td>{{ item.name }}</td>
@@ -31,4 +37,11 @@
                 {% endfor %}
             </tbody>
         </table>
-    {% endblock %}
+    </div>
+    <div class="col-4">
+        <h2>Owned Items</h2>
+        <p>Click on sell item to put an item back on the Market</p>
+        <br>
+    </div>
+</div>
+{% endblock %}
