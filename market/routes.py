@@ -1,7 +1,7 @@
 from market import app
 from flask import render_template, redirect, url_for, flash, request
 from market.models import Item, User
-from market.forms import RegisterForm, LoginForm, PurchaseItemForm
+from market.forms import RegisterForm, LoginForm, PurchaseItemForm, SellItemForm
 from market import db
 from flask_login import login_user, logout_user, login_required, current_user
 
@@ -22,9 +22,10 @@ def market_page():
         if p_item_object:
             if current_user.can_purchase(p_item_object):
                 p_item_object.buy(current_user)
-                flash(f"Congratulations! You purchased {p_item_object.name} for {p_item_object.price}$", category='success'
+                flash(f"Congratulations! You purchased {p_item_object.name} for {p_item_object.price}$", category='success')
             else:
-                flash("Unfortunately, you don't have enough money to purchase {p_item_object.name}!", category='danger')
+                flash(f"Unfortunately, you don't have enough money to purchase {p_item_object.name}!", category='danger')
+        
         #Sell Item Logic
         sold_item = request.form.get('sold.item')
         s_item_object = Item.query.filter_by(name=sold_item).first()
@@ -33,7 +34,7 @@ def market_page():
                 s_item_object.sell(current_user)
                 flash(f"Congratulations! You sold {s_item_object.name} back to market!", category='success')
             else:
-                flash(f"Something went wrong with selling {s_item_object}", category='dangter')
+                flash(f"Something went wrong with selling {s_item_object.name}", category='danger')
 
 
         return redirect(url_for('market_page'))
